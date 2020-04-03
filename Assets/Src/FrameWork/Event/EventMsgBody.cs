@@ -5,7 +5,7 @@
 	QQ:         372058864
 *********************************************************************/
 
-namespace HGame.Event
+namespace HG
 {
     public class EventMsgBody
     {

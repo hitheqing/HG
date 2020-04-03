@@ -1,4 +1,4 @@
-namespace HGame.Skill
+namespace HG
 {
     public class BuffBase
     {

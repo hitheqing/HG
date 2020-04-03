@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -11,39 +11,40 @@ namespace HG
     /// </summary>
     public class PriorityList<T> : IReadOnlyList<T> where T : IComparable<T>
     {
-        
-        private int _size;
+        private        int _size;
         private static int _count;
+
         public int Count
         {
             get { return _size; }
         }
+
         private IndexedItem[] _items;
-        private int _capacity;
-        
-        public PriorityList():this(4)
+        private int           _capacity;
+
+        public PriorityList() : this(4)
         {
         }
 
         public PriorityList(int capacity)
         {
             _capacity = capacity;
-            _items = new IndexedItem[capacity];
-            _size = 0;
+            _items    = new IndexedItem[capacity];
+            _size     = 0;
         }
 
         public PriorityList(IReadOnlyList<T> array)
         {
-            _size = 0;
+            _size     = 0;
             _capacity = array.Count;
-            _items = new IndexedItem[_capacity];
+            _items    = new IndexedItem[_capacity];
 
             for (int i = 0; i < array.Count; i++)
             {
                 Add(array[i]);
             }
         }
-        
+
         private bool IsHigherPriority(int left, int right)
         {
             return _items[left].CompareTo(_items[right]) < 0;
@@ -71,7 +72,7 @@ namespace HG
 
         private void Prewave(int index)
         {
-            if (index <= 0 || index > _size - 1) 
+            if (index <= 0 || index > _size - 1)
             {
                 return;
             }
@@ -88,10 +89,10 @@ namespace HG
         private void SwapSkipCheck(int left, int right)
         {
             var temp = _items[left];
-            _items[left] = _items[right];
+            _items[left]  = _items[right];
             _items[right] = temp;
         }
-        
+
         public bool Remove(T t)
         {
             for (int i = 0; i < _size; i++)
@@ -105,7 +106,7 @@ namespace HG
 
             return false;
         }
-        
+
         public void RemoveAt(int index)
         {
             if (index < 0 || index > _size - 1)
@@ -127,9 +128,10 @@ namespace HG
                         _items[i] = _items[i + 1];
                     }
                 }
-                _items[--_size ] = default(IndexedItem);
+
+                _items[--_size] = default(IndexedItem);
             }
-            
+
             if (_size < _items.Length / 4)
             {
                 var temp = _items;
@@ -137,11 +139,10 @@ namespace HG
                 Array.Copy(temp, 0, _items, 0, _size);
             }
         }
-        
-        
+
         struct IndexedItem : IComparable<IndexedItem>
         {
-            public T Value;
+            public T    Value;
             public long Id;
 
             public int CompareTo(IndexedItem other)
@@ -169,7 +170,7 @@ namespace HG
                 yield return _items[index].Value;
             }
         }
-        
+
         public bool RemoveBy(Func<T, bool> func)
         {
             for (int i = 0; i < _size; i++)

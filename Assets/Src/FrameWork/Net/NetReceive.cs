@@ -1,4 +1,4 @@
-﻿namespace HGame.Net
+﻿namespace HG
 {
     public class NetReceive
     {

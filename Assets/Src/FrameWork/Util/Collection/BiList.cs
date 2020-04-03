@@ -1,40 +1,41 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace HG
 {
-    public class BiList<T>:IReadOnlyList<T>
+    public class BiList<T> : IReadOnlyList<T>
     {
         private const int Mincapacity = 0xF;
+
         private int _head;
         private int _tail;
         private int _size;
         private T[] _items;
         private int _capacity;
 
-        public BiList():this(Mincapacity)
+        public BiList() : this(Mincapacity)
         {
         }
 
         public BiList(int capacity)
         {
             _capacity = capacity < Mincapacity ? Mincapacity : capacity;
-            _items = new T[_capacity];
-            _head = 0;
-            _tail = 0;
-            _size = 0;
+            _items    = new T[_capacity];
+            _head     = 0;
+            _tail     = 0;
+            _size     = 0;
         }
-        
+
         public void AddFirst(T t)
         {
             ValidFirstElement(t);
-            
-            if ( _head == 0)
+
+            if (_head == 0)
             {
                 Prepare();
             }
-            
+
             _items[--_head] = t;
             _size++;
         }
@@ -42,12 +43,12 @@ namespace HG
         public void AddLast(T t)
         {
             ValidFirstElement(t);
-            
+
             if (_tail == _items.Length - 1)
             {
                 Prepare();
             }
-            
+
             _items[++_tail] = t;
             _size++;
         }
@@ -68,10 +69,10 @@ namespace HG
 
             //经测试，移除的时候采用method2  效率更高
             //method 1
-//            {
-//                _size--;
-//                Array.Copy(_items, realIndex + 1, _items, realIndex, _tail - realIndex + 1);
-//            }
+            //            {
+            //                _size--;
+            //                Array.Copy(_items, realIndex + 1, _items, realIndex, _tail - realIndex + 1);
+            //            }
 
             //method 2
             if (index <= (_size - 1) / 2)
@@ -137,11 +138,11 @@ namespace HG
         {
             if (_size == 0)
             {
-                _head = _tail =  (_capacity - 1) / 2;
+                _head         = _tail = (_capacity - 1) / 2;
                 _items[_head] = t;
             }
         }
-        
+
         public IEnumerator<T> GetEnumerator()
         {
             var index = _head - 1;
